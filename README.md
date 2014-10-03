@@ -88,3 +88,56 @@ You can also curl it as a POST request.
 ```
 curl -X POST http://localhost:8000/api/v0/users/list.json>.
 ```
+
+### Writing the first API call to create something
+
+Ok, now let's write an API call simulating creating something and with error handling.
+
+We will need underscore.
+
+```
+npm install underscore --save
+```
+
+Add the top of app.js, add the following.
+
+```
+var _ = require('underscore');
+```
+
+Add the following route.
+
+```
+server.route({
+  method: '*',
+  path: '/api/v0/users/create.json',
+  handler: function (request, reply) {
+    var payload = request.payload;
+    var query = request.query;
+    var params = {};
+    params = _.extend(params, payload);
+    params = _.extend(params, query);
+
+    json = {
+      users: [
+        {
+          id: 1,
+          email: params.email
+        }
+      ]
+    }
+
+    reply(json);
+  }
+});
+```
+
+Cool. Now try that url in your browser. <http://localhost:8000/api/v0/users/create.json?email=mot@mot.la>.
+
+Try changing the email. You will see the email result change.
+
+Finally try as a POST request.
+
+```
+curl -X POST http://localhost:8000/api/v0/users/create.json -d "email=mot@mot.la"
+```

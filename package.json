@@ -4,7 +4,8 @@
   "description": "Example of building an application with a human first API approach.",
   "main": "app.js",
   "dependencies": {
-    "hapi": "^6.10.0"
+    "hapi": "^6.10.0",
+    "underscore": "^1.7.0"
   },
   "devDependencies": {},
   "scripts": {
