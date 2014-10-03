@@ -86,7 +86,7 @@ Then visit <http://localhost:8000/api/v0/users/list.json>.
 You can also curl it as a POST request.
 
 ```
-curl -X POST http://localhost:8000/api/v0/users/list.json>.
+curl -X POST http://localhost:8000/api/v0/users/list.json
 ```
 
 ### Writing the first API call to create something
