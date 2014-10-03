@@ -91,7 +91,7 @@ curl -X POST http://localhost:8000/api/v0/users/list.json>.
 
 ### Writing the first API call to create something
 
-Ok, now let's write an API call simulating creating something and with error handling.
+Ok, now let's write an API call simulating creating something.
 
 We will need underscore.
 
@@ -141,3 +141,59 @@ Finally try as a POST request.
 ```
 curl -X POST http://localhost:8000/api/v0/users/create.json -d "email=mot@mot.la"
 ```
+
+### Add error handling to the create action
+
+Now, let's add some error handling to make sure the human inputs an email when using the API.
+
+```
+server.route({
+  method: '*',
+  path: '/api/v0/users/create.json',
+  handler: function (request, reply) {
+    var payload = request.payload;
+    var query = request.query;
+    var params = {};
+    params = _.extend(params, payload);
+    params = _.extend(params, query);
+
+    if (params.email) {
+      var json = {
+        users: [
+          {
+            id: 1,
+            email: params.email
+          }
+        ]
+      }
+      reply(json);
+    } else {
+      var json = {
+        errors: [
+          {
+            code: "required",
+            field: "email",
+            message: "email cannot be blank"
+          }
+        ]
+      }
+      reply(json).code(400);
+    }
+  }
+});
+```
+
+Now, try that in your url, but this time try with the email blank. <http://localhost:8000/api/v0/users/create.json?email=>
+
+See how you get the error response back. Good job. Next, try as a POST request using curl.
+
+
+```
+curl -X POST http://localhost:8000/api/v0/users/create.json -d "email=" -v
+```
+
+And as you can see in the verbose data that is printed back, you have a status code of 400.
+
+Congratulations, you started writing your first human-first API. It will be predictable and easy for a human to consume. They can try it in their browser and then consume it in their code.
+
+

@@ -35,16 +35,28 @@ server.route({
     params = _.extend(params, payload);
     params = _.extend(params, query);
 
-    json = {
-      users: [
-        {
-          id: 1,
-          email: params.email
-        }
-      ]
+    if (params.email) {
+      var json = {
+        users: [
+          {
+            id: 1,
+            email: params.email
+          }
+        ]
+      }
+      reply(json);
+    } else {
+      var json = {
+        errors: [
+          {
+            code: "required",
+            field: "email",
+            message: "email cannot be blank"
+          }
+        ]
+      }
+      reply(json).code(400);
     }
-
-    reply(json);
   }
 });
 
