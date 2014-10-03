@@ -3,12 +3,25 @@ var Hapi = require('hapi');
 // Create a server with a host and port
 var server = new Hapi.Server('localhost', 8000);
 
-// Add the route
+
 server.route({
-  method: 'GET',
-  path: '/hello',
+  method: '*',
+  path: '/api/v0/users/list.json',
   handler: function (request, reply) {
-    reply('hello world');
+    json = {
+      users: [
+        {
+          id: 1,
+          email: 'mot@mot.la'
+        },
+        {
+          id: 2,
+          email: 'mot@sendgrid.com',
+        }
+      ]
+    }
+
+    reply(json);
   }
 });
 
